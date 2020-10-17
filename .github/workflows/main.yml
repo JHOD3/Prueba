@@ -1,4 +1,3 @@
-name: Deploy via ftp
 on: push
 jobs:
   deploy:
