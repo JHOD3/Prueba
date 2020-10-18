@@ -1,34 +1,15 @@
-name: Build and deploy website
-on:
-  push:
-    branches:
-      - master
-  pull_request:
-    branches:
-      - master
+name: Deploy via ftp
+on: push
 jobs:
-  build:
-    name: Build and deploy the website
+  deploy:
+    name: Deploy
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - uses: shivammathur/setup-php@v2
-      with:
-        php-version: '7.3'
-        tools: composer
-    - run: composer install
-    - uses: actions/setup-node@v1
-      with:
-        node-version: '12'
-    - run: npm install yarn
-    - run: yarn install
-    - run: yarn build
-    
-    - name: Deploy website with FTP
+    - name: FTP-Deploy-Action
       uses: SamKirkland/FTP-Deploy-Action@3.1.1
       with:
-        ftp-server: ${{ secrets.FTP_URL }} # configure .git-ftp-include
-        ftp-username: ${{ secrets.FTP_USER }}
+        ftp-server: ${{ secrets.FTP_SERVER }}
+        ftp-username: ${{ secrets.FTP_USERNAME }}
         ftp-password: ${{ secrets.FTP_PASSWORD }}
         local-dir: ./
-        git-ftp-args: --dry-run
